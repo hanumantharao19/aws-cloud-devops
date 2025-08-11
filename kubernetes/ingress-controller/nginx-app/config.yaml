@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-html
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>Haswithc Technologies</title>
+      </head>
+      <body>
+        <h1>Welcome to Haswithc Technologies!</h1>
+        <p>Your Kubernetes and Cloud learning hub.</p>
+      </body>
+    </html>
