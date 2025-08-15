@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['dev-vpc', 'qa-vpc', 'prod-vpc'], description: 'Select environment to deploy')
+        choice(name: 'ACTION', choices: ['plan', 'apply', 'destroy'], description: 'Terraform action to perform')
+    }
+
+    environment {
+
+        GITHUB_PAT            = credentials('jenkins-git') // For private repo clone (if needed)
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: "https://${GITHUB_PAT}@github.com/hanumantharao19/hanu-aws-cloud-devops.git"
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir("modules_usage/${ENVIRONMENT}") {
+                    sh "terraform init"
+                }
+            }
+        }
+
+        stage('Terraform Plan/Apply/Destroy') {
+            steps {
+                dir("modules_usage/${ENVIRONMENT}") {
+                    script {
+                        if (params.ACTION == 'plan') {
+                            sh "terraform plan "
+                        } else if (params.ACTION == 'apply') {
+                            sh "terraform apply -auto-approve "
+                        } else if (params.ACTION == 'destroy') {
+                            sh "terraform destroy -auto-approve"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
