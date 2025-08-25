@@ -11,9 +11,26 @@ variable "tags" {
 }
 
 variable "ami" {
-  default = "ami-0583d8c7a9c35822c"
+  default = "ami-00ca32bbc84273381"
 }
 
+
+variable "vpc_id" {
+  default = ""
+}
+variable "subnet_id" {
+  default = ""
+}
+
+variable "security-group_name" {
+  default = ""
+}
+
+
+
+variable "region" {
+  default = ""
+}
 
 variable "instance_type" {
   default = "t2.micro"

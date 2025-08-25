@@ -1,8 +1,8 @@
 provider "aws" {
-    region = "us-east-1"
+    region = var.region
 }
 resource "aws_security_group" "mhr-dev-sg" {
-vpc_id = "vpc-04906b5f040a8669b"
+vpc_id = var.vpc_id
  name = "dev-mhr-security-group"
  ingress {
     description = "HTTP from VPC"
@@ -36,7 +36,7 @@ resource "aws_instance" "server" {
   instance_type          = var.instance_type
   key_name      = aws_key_pair.instance.key_name
   vpc_security_group_ids = [aws_security_group.mhr-dev-sg.id]
-  subnet_id              = "subnet-0f9331219fd4cc718"
+  subnet_id              = var.subnet_id
   tags = var.tags
   associate_public_ip_address = true
 
