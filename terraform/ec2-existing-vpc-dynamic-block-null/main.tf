@@ -53,6 +53,10 @@ resource "aws_instance" "server" {
 # -------------------------------
 resource "null_resource" "configure_httpd" {
   depends_on = [aws_instance.server]
+   triggers = {
+    always_run = timestamp()               # ensures re-run every apply
+    file_hash  = filesha1("index.html")    # re-run only when file changes
+  }
 
   connection {
     type        = "ssh"
@@ -72,7 +76,7 @@ resource "null_resource" "configure_httpd" {
       "sudo yum install -y httpd",
       "sudo systemctl start httpd",
       "sudo systemctl enable httpd",
-      "cp /home/ec2-user/index.html /var/www/html/index.html"
+      "sudo cp /home/ec2-user/index.html /var/www/html/index.html"
     ]
   }
 }
