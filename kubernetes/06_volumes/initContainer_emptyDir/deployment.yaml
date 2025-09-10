@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-init-website
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-init-website
+  template:
+    metadata:
+      labels:
+        app: nginx-init-website
+    spec:
+      initContainers:
+        - name: init-downloader
+          image: curlimages/curl:latest
+          command:
+            - sh
+            - -c
+            - |
+              echo "Downloading website files..."
+              curl -L -o /usr/share/nginx/html/index.html https://raw.githubusercontent.com/mdn/beginner-html-site/gh-pages/index.html
+              curl -L -o /usr/share/nginx/html/style.css https://raw.githubusercontent.com/mdn/beginner-html-site/gh-pages/style.css
+              echo "All files downloaded!"
+          volumeMounts:
+            - name: web-content
+              mountPath: /usr/share/nginx/html
+
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: web-content
+              mountPath: /usr/share/nginx/html
+
+      volumes:
+        - name: web-content
+          emptyDir: {}
+
