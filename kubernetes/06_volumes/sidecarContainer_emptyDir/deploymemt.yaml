@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-logs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-logs
+  template:
+    metadata:
+      labels:
+        app: nginx-logs
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: log-volume
+              mountPath: /var/log/nginx
+
+        - name: log-collector
+          image: busybox
+          command: ["sh", "-c", "tail -f /logs/access.log"]
+          volumeMounts:
+            - name: log-volume
+              mountPath: /logs
+
+      volumes:
+        - name: log-volume
+          emptyDir: {}
+
