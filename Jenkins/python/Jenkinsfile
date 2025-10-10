@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://githeducation-eks-0D8C2Vurub.com/hanumantharao19/sample-python-app.git'
+                git branch: 'main', url: 'https://github.com/hanumantharao19/sample-python-app.git'
             }
         }
 
