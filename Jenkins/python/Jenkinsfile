@@ -2,11 +2,14 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = "us-east-2"                 // Change to your AWS region
-        AWS_ACCOUNT_ID = "109398616914"          // Replace with your AWS account ID
-        ECR_REPO = "hanu-python-app"             // Your ECR repository name
+        AWS_REGION = "us-east-2"
+        AWS_ACCOUNT_ID = "109398616914"
+        ECR_REPO = "hanu-python-app"
         IMAGE_TAG = "${BUILD_NUMBER}"
         ECR_IMAGE = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
+        K8S_DEPLOYMENT = "hanu-python-deployment"   // existing deployment name in EKS
+        K8S_NAMESPACE = "default"                   // change if your app runs in another namespace
+        EKS_CLUSTER = "education-eks-0D8C2Vur"       // replace with actual cluster name
     }
 
     stages {
@@ -16,7 +19,7 @@ pipeline {
             }
         }
 
-        stage('Authenticate with AWS') {
+        stage('Authenticate with AWS & ECR') {
             steps {
                 script {
                     sh """
@@ -48,14 +51,31 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to EKS') {
+            steps {
+                script {
+                    sh """
+                        # Configure kubectl to talk to your EKS cluster
+                        aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_CLUSTER}
+
+                        # Update the image in the deployment
+                        kubectl set image deployment/${K8S_DEPLOYMENT} ${K8S_DEPLOYMENT}=${ECR_IMAGE}:${IMAGE_TAG} -n ${K8S_NAMESPACE}
+
+                        # Wait for rollout to complete
+                        kubectl rollout status deployment/${K8S_DEPLOYMENT} -n ${K8S_NAMESPACE}
+                    """
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo "✅ Successfully built and pushed: ${ECR_IMAGE}:${IMAGE_TAG}"
+            echo "✅ Successfully built, pushed, and deployed: ${ECR_IMAGE}:${IMAGE_TAG}"
         }
         failure {
-            echo "❌ Build failed!"
+            echo "❌ Build or deployment failed! Check logs above."
         }
     }
 }
