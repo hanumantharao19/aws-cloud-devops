@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hanu-python-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hanu-python-app
+  template:
+    metadata:
+      labels:
+        app: hanu-python-app
+    spec:
+      containers:
+        - name: hanu-python-app
+          image: 109398616914.dkr.ecr.us-east-2.amazonaws.com/hanu-python-app:latest
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hanu-python-service
+  namespace: default
+spec:
+  selector:
+    app: hanu-python-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
+
