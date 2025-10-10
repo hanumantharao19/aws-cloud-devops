@@ -75,7 +75,7 @@ pipeline {
                             kubectl set image deployment/${K8S_DEPLOYMENT} ${K8S_DEPLOYMENT}=${ECR_IMAGE}:${IMAGE_TAG} -n ${K8S_NAMESPACE}
                         else
                             echo "🚀 Deployment not found. Creating new deployment from YAML..."
-                            kubectl apply -f cicd/Jenkins/python/k8s/deployment.yaml
+                            kubectl apply -f cicd/Jenkins/python/k8s/deployment.yaml --validate=false
                         fi
 
                         # Wait for rollout to complete
