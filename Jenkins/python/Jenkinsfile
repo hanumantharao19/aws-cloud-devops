@@ -1,1 +1,61 @@
-#pyhton application
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = "us-east-2"                 // Change to your AWS region
+        AWS_ACCOUNT_ID = "109398616914"          // Replace with your AWS account ID
+        ECR_REPO = "hanu-python-app"             // Your ECR repository name
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        ECR_IMAGE = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/hanumantharao19/sample-python-app.git'
+            }
+        }
+
+        stage('Authenticate with AWS') {
+            steps {
+                script {
+                    sh """
+                        aws configure set region ${AWS_REGION}
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                    """
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh """
+                        docker build -t ${ECR_IMAGE}:${IMAGE_TAG} .
+                    """
+                }
+            }
+        }
+
+        stage('Push to AWS ECR') {
+            steps {
+                script {
+                    sh """
+                        docker push ${ECR_IMAGE}:${IMAGE_TAG}
+                        docker tag ${ECR_IMAGE}:${IMAGE_TAG} ${ECR_IMAGE}:latest
+                        docker push ${ECR_IMAGE}:latest
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Successfully built and pushed: ${ECR_IMAGE}:${IMAGE_TAG}"
+        }
+        failure {
+            echo "❌ Build failed!"
+        }
+    }
+}
