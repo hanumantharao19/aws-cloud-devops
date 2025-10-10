@@ -7,15 +7,15 @@ pipeline {
         ECR_REPO = "hanu-python-app"
         IMAGE_TAG = "${BUILD_NUMBER}"
         ECR_IMAGE = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}"
-        K8S_DEPLOYMENT = "hanu-python-deployment"   // existing deployment name in EKS
-        K8S_NAMESPACE = "default"                   // change if your app runs in another namespace
-        EKS_CLUSTER = "education-eks-0D8C2Vur"       // replace with actual cluster name
+        K8S_DEPLOYMENT = "hanu-python-deployment"
+        K8S_NAMESPACE = "default"
+        EKS_CLUSTER = "education-eks-0D8C2Vur"  // <-- replace with your actual EKS cluster name
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/hanumantharao19/sample-python-app.git'
+                git branch: 'main', url: 'https://githeducation-eks-0D8C2Vurub.com/hanumantharao19/sample-python-app.git'
             }
         }
 
@@ -59,8 +59,14 @@ pipeline {
                         # Configure kubectl to talk to your EKS cluster
                         aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_CLUSTER}
 
-                        # Update the image in the deployment
-                        kubectl set image deployment/${K8S_DEPLOYMENT} ${K8S_DEPLOYMENT}=${ECR_IMAGE}:${IMAGE_TAG} -n ${K8S_NAMESPACE}
+                        # Check if deployment exists
+                        if kubectl get deployment ${K8S_DEPLOYMENT} -n ${K8S_NAMESPACE} >/dev/null 2>&1; then
+                            echo "🔄 Updating existing deployment with new image..."
+                            kubectl set image deployment/${K8S_DEPLOYMENT} ${K8S_DEPLOYMENT}=${ECR_IMAGE}:${IMAGE_TAG} -n ${K8S_NAMESPACE}
+                        else
+                            echo "🚀 Deployment not found. Creating new deployment from YAML..."
+                            kubectl apply -f k8s/deployment.yaml
+                        fi
 
                         # Wait for rollout to complete
                         kubectl rollout status deployment/${K8S_DEPLOYMENT} -n ${K8S_NAMESPACE}
