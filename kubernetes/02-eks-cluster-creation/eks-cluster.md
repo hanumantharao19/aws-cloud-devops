@@ -48,3 +48,13 @@ aws-iam-authenticator version
 ```
 aws eks update-kubeconfig --region us-east-2 --name <clustername>
 ```
+
+# connect to EC2 to EKS through role we should use below command
+```
+eksctl create iamidentitymapping \
+  --cluster education-eks-0D8C2Vur \
+  --region us-east-2 \
+  --arn arn:aws:iam::109398616914:role/hanu \
+  --username hanu \
+  --group system:masters
+```
