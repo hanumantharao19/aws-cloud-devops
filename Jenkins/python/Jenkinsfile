@@ -13,9 +13,19 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
+         stage('Checkout Repositories') {
             steps {
-                git branch: 'main', url: 'https://github.com/hanumantharao19/sample-python-app.git'
+                script {
+                    echo "🔄 Checking out both application and CICD repos..."
+                    // Clone the app repo
+                    dir('app') {
+                        git branch: 'main', url: 'https://github.com/hanumantharao19/sample-python-app.git'
+                    }
+                    // Clone the CICD repo that contains Jenkinsfile & k8s manifests
+                    dir('cicd') {
+                        git branch: 'main', url: 'https://github.com/hanumantharao19/aws-cloud-devops.git'
+                    }
+                }
             }
         }
 
@@ -65,7 +75,7 @@ pipeline {
                             kubectl set image deployment/${K8S_DEPLOYMENT} ${K8S_DEPLOYMENT}=${ECR_IMAGE}:${IMAGE_TAG} -n ${K8S_NAMESPACE}
                         else
                             echo "🚀 Deployment not found. Creating new deployment from YAML..."
-                            kubectl apply -f k8s/deployment.yaml
+                            kubectl apply -f Jenkins/python/k8s/deployment.yaml
                         fi
 
                         # Wait for rollout to complete
