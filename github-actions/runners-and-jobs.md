@@ -95,3 +95,16 @@ strategy:
   - Multi-environment deployments
   - Multi-version testing
   - Multi-region Terraform plans
+
+
+  │   ├── 01-introduction.md
+│   ├── 02-workflow-basics.md
+│   ├── 03-runners-and-jobs.md
+│   ├── 04-actions-and-marketplace.md
+│   ├── 05-secrets-and-variables.md
+│   ├── 06-environments-and-approvals.md
+│   ├── 07-terraform-ci-cd.md
+│   ├── 08-aws-terraform-pipeline.md
+│   ├── 09-gcp-terraform-pipeline.md
+│   ├── 10-best-practices.md
+│   └── 11-interview-questions.md
