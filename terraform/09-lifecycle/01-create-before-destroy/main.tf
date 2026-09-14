@@ -1,15 +1,18 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
-resource "aws_s3_bucket" "app" {
-  bucket = "hanu-lifecycle-demo-2026"
+resource "aws_instance" "instance" {
+  for_each = var.instances
 
-  lifecycle {
+  ami           = var.ami
+  instance_type = each.value
+
+   lifecycle {
     create_before_destroy = true
   }
 
   tags = {
-    Name = "application-bucket"
+    Name = each.key
   }
 }

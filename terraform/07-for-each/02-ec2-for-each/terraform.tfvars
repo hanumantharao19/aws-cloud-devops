@@ -1,5 +1,5 @@
 region        = "us-east-1"
-ami           = "YOUR_AMI_ID"
+ami           = "ami-081b0a6eac00b4f53"
 instance_type = "t2.micro"
 
 instance_names = [

@@ -15,7 +15,7 @@ variable "instance_type" {
 }
 
 resource "aws_instance" "app" {
-  ami = "YOUR_AMI_ID"
+  ami = "ami-081b0a6eac00b4f53"
 
   instance_type = lookup(
     var.instance_type,

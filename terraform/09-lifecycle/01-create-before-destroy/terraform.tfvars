@@ -1,6 +1,6 @@
 region = "us-east-1"
 
-ami = "ami-081b0a6eac00b4f53"
+ami = "ami-0b6d9d3d33ba97d99"
 
 instances = {
   dev  = "t2.micro"

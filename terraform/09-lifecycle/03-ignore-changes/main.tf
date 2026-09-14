@@ -9,10 +9,10 @@ resource "aws_s3_bucket" "app" {
     Name        = "application-bucket"
     Environment = "dev"
   }
-
   lifecycle {
     ignore_changes = [
       tags
     ]
   }
+ 
 }
