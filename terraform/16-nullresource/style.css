@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+    background: #f5f7fb;
+}
+
+/* Header */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: #111827;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 30px;
+    font-size: 16px;
+}
+
+nav a:hover {
+    color: #38bdf8;
+}
+
+/* Hero */
+
+.hero {
+    min-height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed,
+        #db2777
+    );
+
+    color: white;
+}
+
+.hero-content {
+    max-width: 850px;
+    padding: 40px 20px;
+}
+
+.hero h1 {
+    font-size: 52px;
+    line-height: 1.2;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    color: #facc15;
+}
+
+.hero p {
+    font-size: 21px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+}
+
+.button {
+    display: inline-block;
+    padding: 14px 30px;
+    background: #facc15;
+    color: #111827;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+}
+
+.button:hover {
+    background: white;
+}
+
+/* Courses */
+
+.courses {
+    padding: 70px 8%;
+    text-align: center;
+}
+
+.courses h2 {
+    font-size: 38px;
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 45px;
+}
+
+.course-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.course {
+    width: 280px;
+    min-height: 260px;
+    padding: 30px 25px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.course:hover {
+    transform: translateY(-8px);
+}
+
+.icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.course h3 {
+    font-size: 23px;
+    margin-bottom: 15px;
+}
+
+.course p {
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Course colors */
+
+.cloud h3 {
+    color: #2563eb;
+}
+
+.devops h3 {
+    color: #7c3aed;
+}
+
+.sre h3 {
+    color: #db2777;
+}
+
+.platform h3 {
+    color: #059669;
+}
+
+.ai h3 {
+    color: #ea580c;
+}
+
+/* About */
+
+.about {
+    padding: 70px 15%;
+    text-align: center;
+    background: #111827;
+    color: white;
+}
+
+.about h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #38bdf8;
+}
+
+.about p {
+    max-width: 800px;
+    margin: auto;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+/* Contact */
+
+.contact {
+    padding: 70px 15%;
+    text-align: center;
+    background: white;
+}
+
+.contact h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.contact p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+/* Footer */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #0f172a;
+    color: white;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 8px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .course {
+        width: 100%;
+        max-width: 350px;
+    }
+}

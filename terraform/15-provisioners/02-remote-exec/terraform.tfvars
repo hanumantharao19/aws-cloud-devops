@@ -1,0 +1,5 @@
+region            = "us-east-1"
+ami_id            = "ami-0fef201115eefe936"
+instance_type     = "t2.micro"
+key_name          = "my-key"
+private_key_path  = "C:/Users/Hanu Medikonda/my-key.pem"

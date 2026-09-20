@@ -1,0 +1,6 @@
+================================
+EC2 SERVER DETAILS
+================================
+Instance ID : i-098a39cebe7b8693d
+Public IP   : 98.86.116.102
+Status      : Server Ready
