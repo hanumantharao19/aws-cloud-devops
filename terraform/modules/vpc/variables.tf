@@ -1,20 +1,16 @@
-variable "aws_region" {
+variable "vpc_name" {
+  description = "Name of the VPC"
   type        = string
-  description = "AWS region"
-}
-
-variable "project" {
-  type        = string
-  description = "Project name for tagging"
 }
 
 variable "vpc_cidr" {
+  description = "CIDR block for the VPC"
   type        = string
-  description = "VPC CIDR block"
 }
 
 variable "public_subnets" {
-  description = "Map of public subnets with CIDR and AZ"
+  description = "Public subnet configuration"
+
   type = map(object({
     cidr = string
     az   = string
@@ -22,9 +18,23 @@ variable "public_subnets" {
 }
 
 variable "private_subnets" {
-  description = "Map of private subnets with CIDR and AZ"
+  description = "Private subnet configuration"
+
   type = map(object({
-    cidr = string
-    az   = string
+    cidr     = string
+    az       = string
+    nat_key  = string
   }))
+}
+
+variable "enable_nat_gateway" {
+  description = "Whether to create NAT Gateways"
+  type        = bool
+  default     = true
+}
+
+variable "single_nat_gateway" {
+  description = "Use a single NAT Gateway for all private subnets"
+  type        = bool
+  default     = false
 }
