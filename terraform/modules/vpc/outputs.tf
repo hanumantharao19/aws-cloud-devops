@@ -22,11 +22,7 @@ output "public_subnet_ids" {
 }
 
 output "private_subnet_ids" {
-  description = "Map of private subnet names to subnet IDs"
-  value = {
-    for key, subnet in aws_subnet.private :
-    key => subnet.id
-  }
+  value = [for subnet in aws_subnet.private : subnet.id]
 }
 
 output "public_subnet_cidrs" {

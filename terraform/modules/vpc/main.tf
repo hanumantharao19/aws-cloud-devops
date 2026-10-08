@@ -167,7 +167,7 @@ resource "aws_route_table" "private" {
 # ============================================================
 
 resource "aws_route" "private_nat" {
-  for_each = var.private_subnets
+  for_each = var.enable_nat_gateway ? var.private_subnets : {}
 
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
