@@ -23,7 +23,7 @@ variable "private_subnets" {
   type = map(object({
     cidr     = string
     az       = string
-    nat_key  = string
+    nat_key = optional(string)
   }))
 }
 
